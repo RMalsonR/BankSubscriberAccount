@@ -1,0 +1,16 @@
+Django~=3.2
+djangorestframework~=3.12.4
+
+#Database
+psycopg2==2.8.6
+
+# Background tasks
+redis==3.4.1
+celery[redis]==4.3.0
+django-redis==4.10.0
+
+#Servers
+gunicorn==20.0.4
+
+# Utils
+pytz==2021.1

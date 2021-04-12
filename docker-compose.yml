@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  bd:
+    image: "postgres:9.6-alpine"
+    restart: unless-stopped
+    ports:
+      - 5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    env_file: docker-app/config/.env
+
+  web:
+    build: .
+    restart: on-failure:3
+    volumes:
+    - .:/usr/src/app
+    - .logs/:/usr/src/app/logs
+    - static_volume:/usr/src/app/staticfiles
+    env_file:
+      - docker-app/config/.env
+    command: gunicorn BankSubscriberAccount.wsgi:application --bind 0.0.0.0:8000
+    expose:
+      - 8000
+    depends_on:
+      - bd
+      - redis
+
+  celery:
+    build: .
+    command: celery -A BankSubscriberAccount worker -l INFO
+    volumes:
+      - .:/usr/src/app/
+    env_file:
+      - docker-app/config/.env
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: "redis:alpine"
+
+  nginx:
+    build: ./docker-app/nginx/.
+    restart: on-failure:3
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
+
+volumes:
+  pgdata:
+  static_volume:
+  logs:
