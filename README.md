@@ -34,7 +34,7 @@ You will need:
     It will init postgres and migrate.
    
 
-3. For create superuser, run in another terminal (after build):
+3. For create superuser, run in another terminal (after build):  
    **IMPORTANT! RUN IT DURING PREVIOUS STEP IS STILL WORKING**
     ```shell
     sh docker-app/run_and_build/create_superuser.sh
