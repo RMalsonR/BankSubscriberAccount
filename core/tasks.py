@@ -16,6 +16,7 @@ class SubtractHoldTask(PeriodicTask):
         logger.debug('Start Celery task: SubtractHoldTask')
         try:
             service = SubtractHoldFlow()
+            service.run()
         except BaseException as e:
             logger.error(f'Get unexpected error during celery task: {e}')
         logger.debug('Finish Celery task: SubtractHoldTask')
