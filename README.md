@@ -1,6 +1,25 @@
 # BankSubscriberAccount
 Operations with subscriber account
 
+---
+
+##Overview
+
+Provided BankAccount model with fields:
+
+- id: uuidV4
+- owner_name
+- balance
+- hold
+
+API:
+
+- `api/{pk}/add` adding value to `balance`
+- `api/{pk}/sbtract` subtract value from `balance` by adding in to `hold`
+- `api/{pk}/status` get account information
+
+Also provided Celery periodic task that every 10 minutes subtract `hold` value from `balance` and set `hold` as 0.
+
 ---  
 
 ## I. Technology Stack:  
