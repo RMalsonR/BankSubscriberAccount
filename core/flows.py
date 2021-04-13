@@ -12,11 +12,12 @@ class SubtractHoldFlow(object):
 
     def run(self):
         logger.debug('Start SubtractHoldFlow service.')
-        with atomic():
-            qs = self.model.objects.not_zero_hold()
-            logger.debug(f'Select {len(qs)} records and lock them')
-            for account in qs:
+        qs = self.model.objects.not_zero_hold()
+        logger.debug(f'Select {len(qs)} records.')
+        for account in qs:
+            with atomic():
+                account = BankAccount.objects.select_for_update().get(id=account.id)
                 account.balance -= account.hold
                 account.hold = 0
                 account.save()
-            logger.debug('Finished SubtractHoldFlow service.')
+        logger.debug('Finished SubtractHoldFlow service.')

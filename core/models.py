@@ -12,7 +12,7 @@ from core.enums import AccountStatusEnum
 class BankAccountManager(models.Manager):
     """BankAccount model Manager. Using to select record with non zero hold"""
     def not_zero_hold(self):
-        return self.filter(Q(hold__gt=0) & Q(status=AccountStatusEnum.OPEN.value)).select_for_update()
+        return self.filter(Q(hold__gt=0) & Q(status=AccountStatusEnum.OPEN.value))
 
 
 class BankAccount(AbstractUUID):
